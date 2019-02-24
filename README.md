@@ -58,7 +58,14 @@ myfile?.rtf
 *\sub_path\*
 first_path\*
 path1\path2\file.avi
+<F>*abc*
 ```
+
+> If you use the string `<F>` with a mask, it will be considered only the file name part of the path. This is usefull when the mask could be confused with the directory part.
+
+Example: Let's assume there is a path C:\MyApp. Inside this folder there is another folder C:\MyApp\SubFolder. Inside this last folder, there is a file called my_app_file.txt.
+
+So, if we need to exclude all files that contains the text "app", we can specify at Masks property: `*app*`. But in this case, the folder will be excluded too, because they matches the expression `*app*`, and assuming that we want to include this directory because there are another files with other different names. In this case, we can use `<F>*app*`. This will consider only the file name part when the component checks the masks.
 
 *This property depends on **UseMask** property enabled. Also it will work according to **MaskKing** property definition.*
 
