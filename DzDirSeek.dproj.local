@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019/02/23 20:35:42.000.864,=rtl.dcp</Transaction>
+    <Transaction>2019/02/23 20:35:57.000.363,D:\Delphi\GitHub\DzDirSeek\DirSeek.dproj=C:\Users\Root\Documents\Embarcadero\Studio\Projects\Package1.dproj</Transaction>
+    <Transaction>2019/02/23 20:36:05.000.520,D:\Delphi\GitHub\DzDirSeek\DzDirSeek.dproj=D:\Delphi\GitHub\DzDirSeek\DirSeek.dproj</Transaction>
+    <Transaction>2019/02/23 20:36:37.000.053,=D:\Delphi\GitHub\DzDirSeek\DzDirSeek.pas</Transaction>
+  </Transactions>
+</BorlandProject>
