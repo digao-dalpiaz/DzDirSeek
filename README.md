@@ -6,6 +6,11 @@
 ![Platforms](https://img.shields.io/badge/Platforms-Win32%20and%20Win64-red.svg)
 ![Auto Install](https://img.shields.io/badge/-Auto%20Install%20App-orange.svg)
 
+- [Introduction](#introduction)
+- [Installing](#installing)
+- [How to use](#how-to-use)
+- [Properties](#properties)
+
 ## Introduction
 
 When using Delphi and working with files and directories, eventually you need to search and get a list of files in a directory, or even search files in sub-directories.
