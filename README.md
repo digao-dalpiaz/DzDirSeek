@@ -49,7 +49,7 @@ Then you can read the public property `List` (TStringList) to get all found file
 
 `MaskKind: TDSMaskKind` =
 
-- mkInclusions: Only the masks specifyed at **Masks** property will be included in results. *If you leave Masks propery blank, no file will be retrieved.*
+- mkInclusions: Only the masks specified at **Masks** property will be included in results. *If you leave Masks property blank, no file will be retrieved.*
 
 - mkExceptions (default): All files will be included in results, except the files which matches **Masks** properties. *If you leave Masks property blank, all files will be retrieved.*
 
@@ -66,7 +66,7 @@ path1\path2\file.avi
 <F>*abc*
 ```
 
-> If you use the string `<F>` with a mask, it will be considered only the file name part of the path. This is usefull when the mask could be confused with the directory part.
+> If you use the string `<F>` with a mask, it will be considered only the file name part of the path. This is useful when the mask could be confused with the directory part.
 
 Example: Let's assume there is a path C:\MyApp. Inside this folder there is another folder C:\MyApp\SubFolder. Inside this last folder, there is a file called my_app_file.txt.
 
