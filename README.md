@@ -72,7 +72,7 @@ Example: Let's assume there is a path C:\MyApp. Inside this folder there is anot
 
 So, if we need to exclude all files that contains the text "app", we can specify at Masks property: `*app*`. But in this case, the folder will be excluded too, because they matches the expression `*app*`, and assuming that we want to include this directory because there are another files with other different names. In this case, we can use `<F>*app*`. This will consider only the file name part when the component checks the masks.
 
-*This property depends on **UseMask** property enabled. Also it will work according to **MaskKing** property definition.*
+*This property depends on **UseMask** property enabled. Also it will work according to **MaskKind** property definition.*
 
 `ResultKind: TDSResultKind` = 
 
