@@ -8,10 +8,17 @@
 
 ![Design Example](images/design_example.png)
 
+- [What's New](#whats-new)
 - [Introduction](#introduction)
 - [Installing](#installing)
 - [How to use](#how-to-use)
 - [Properties](#properties)
+
+## What's New
+
+- 05/03/2020
+
+   - Updated CompInstall to version 1.2
 
 ## Introduction
 
