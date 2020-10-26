@@ -26,7 +26,7 @@ package DzDirSeek;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Digao Dalpiaz - DzDirSeek Component'}
+{$DESCRIPTION 'Digao Dalpiaz - DzDirSeek component'}
 {$IMPLICITBUILD ON}
 
 requires
