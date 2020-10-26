@@ -1,6 +1,6 @@
 {------------------------------------------------------------------------------
 TDzDirSeek component
-Developed by Rodrigo Depiné Dalpiaz (digão dalpiaz)
+Developed by Rodrigo Depine Dalpiaz (digao dalpiaz)
 Non visual component to search files in directories
 
 https://github.com/digao-dalpiaz/DzDirSeek
@@ -20,6 +20,8 @@ type
 
   TDzDirSeek = class(TComponent)
   private
+    FAbout: String;
+
     FDir: String;
     FSubDir: Boolean;
     FSorted: Boolean;
@@ -43,6 +45,8 @@ type
 
     property List: TStringList read FList;
   published
+    property About: String read FAbout;
+
     property Dir: String read FDir write FDir;
     property SubDir: Boolean read FSubDir write FSubDir default True;
     property Sorted: Boolean read FSorted write FSorted default False;
@@ -71,6 +75,8 @@ end;
 constructor TDzDirSeek.Create(AOwner: TComponent);
 begin
   inherited;
+
+  FAbout := 'Digao Dalpiaz / Version 1.1';
 
   FSubDir := True;
   FResultKind := rkComplete;
