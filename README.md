@@ -16,6 +16,10 @@
 
 ## What's New
 
+- 10/26/2020
+
+   - Updated CompInstall to version 2.0
+
 - 05/03/2020
 
    - Updated CompInstall to version 1.2
