@@ -20,9 +20,9 @@ type
 
   TDzDirSeek = class(TComponent)
   private
-    FAbout: String;
+    FAbout: string;
 
-    FDir: String;
+    FDir: string;
     FSubDir: Boolean;
     FSorted: Boolean;
     FResultKind: TDSResultKind;
@@ -32,10 +32,10 @@ type
 
     FList: TStringList;
 
-    BaseDir: String;
-    procedure IntSeek(const RelativeDir: String);
-    function CheckMask(const aFile: String; IsDir: Boolean): Boolean;
-    function GetName(const RelativeDir, Nome: String): String;
+    BaseDir: string;
+    procedure IntSeek(const RelativeDir: string);
+    function CheckMask(const aFile: string; IsDir: Boolean): Boolean;
+    function GetName(const RelativeDir, Nome: string): string;
     procedure DoSort;
   public
     constructor Create(AOwner: TComponent); override;
@@ -45,9 +45,9 @@ type
 
     property List: TStringList read FList;
   published
-    property About: String read FAbout;
+    property About: string read FAbout;
 
-    property Dir: String read FDir write FDir;
+    property Dir: string read FDir write FDir;
     property SubDir: Boolean read FSubDir write FSubDir default True;
     property Sorted: Boolean read FSorted write FSorted default False;
     property ResultKind: TDSResultKind read FResultKind write FResultKind default rkComplete;
@@ -56,8 +56,8 @@ type
     property Masks: TStrings read FMasks write FMasks;
   end;
 
-function BytesToMB(X: Int64): String;
-function GetFileSize(const aFileName: String): Int64;
+function BytesToMB(X: Int64): string;
+function GetFileSize(const aFileName: string): Int64;
 
 procedure Register;
 
@@ -109,7 +109,7 @@ begin
   if FSorted then DoSort;
 end;
 
-procedure TDzDirSeek.IntSeek(const RelativeDir: String);
+procedure TDzDirSeek.IntSeek(const RelativeDir: string);
 var Sr: TSearchRec;
 
   function IntCheckMask(IsDir: Boolean): Boolean;
@@ -141,17 +141,17 @@ begin
   end;
 end;
 
-function TDzDirSeek.CheckMask(const aFile: String; IsDir: Boolean): Boolean;
+function TDzDirSeek.CheckMask(const aFile: string; IsDir: Boolean): Boolean;
 
 type
   TProps = (pOnlyFile);
   TPropsSet = set of TProps;
 
-  function GetProps(var Mask: String): TPropsSet;
+  function GetProps(var Mask: string): TPropsSet;
   var Props: TPropsSet;
 
-    procedure CheckProp(const aProp: String; pProp: TProps);
-    var aIntProp: String;
+    procedure CheckProp(const aProp: string; pProp: TProps);
+    var aIntProp: string;
     begin
       aIntProp := '<'+aProp+'>';
     
@@ -171,7 +171,7 @@ type
   end;
 
 var
-  aPreMask, aMask: String;
+  aPreMask, aMask: string;
   P: TPropsSet;
   Normal: Boolean; //not OnlyFile
 begin
@@ -197,7 +197,7 @@ begin
   if FMaskKind = mkExceptions then Result := not Result;
 end;
 
-function TDzDirSeek.GetName(const RelativeDir, Nome: String): String;
+function TDzDirSeek.GetName(const RelativeDir, Nome: string): string;
 begin
   case FResultKind of
     rkComplete: Result := BaseDir + RelativeDir + Nome;
@@ -209,9 +209,9 @@ end;
 // ============================================================================
 
 function SortItem(List: TStringList; Index1, Index2: Integer): Integer;
-var A1, A2: String;
-    Dir1, Dir2: String;
-    Name1, Name2: String;
+var A1, A2: string;
+    Dir1, Dir2: string;
+    Name1, Name2: string;
 begin
   A1 := List[Index1];
   A2 := List[Index2];
@@ -235,12 +235,12 @@ end;
 
 // ============================================================================
 
-function BytesToMB(X: Int64): String;
+function BytesToMB(X: Int64): string;
 begin
   Result := FormatFloat('0.00 MB', X / 1024 / 1024);
 end;
 
-function GetFileSize(const aFileName: String): Int64;
+function GetFileSize(const aFileName: string): Int64;
 var Sr: TSearchRec;
 begin
   if FindFirst(aFileName, faAnyFile, Sr) = 0 then
