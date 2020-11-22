@@ -36,8 +36,9 @@ type
     function CheckMask_List(const aFile: string; IsDir: Boolean; MaskList: TStrings): Boolean;
     function GetName(const RelativeDir, Nome: string): string;
     procedure DoSort;
-    procedure SetExclusions(const Value: TStrings);
+
     procedure SetInclusions(const Value: TStrings);
+    procedure SetExclusions(const Value: TStrings);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -107,7 +108,6 @@ procedure TDzDirSeek.SetExclusions(const Value: TStrings);
 begin
   FExclusions.Assign(Value);
 end;
-
 
 procedure TDzDirSeek.Seek;
 begin
