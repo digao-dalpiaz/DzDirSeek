@@ -156,9 +156,9 @@ end;
 
 function TDzDirSeek.CheckMask(const aFile: string; IsDir: Boolean): Boolean;
 begin
+  if not FUseMask then Exit(True);
+
   Result :=
-    FUseMask
-    and
     ( //Inclusions
       IsDir
       or (FInclusions.Count=0)
