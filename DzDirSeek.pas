@@ -16,7 +16,6 @@ uses System.Classes;
 
 type
   TDSResultKind = (rkComplete, rkRelative, rkOnlyName);
-  TDSMaskKind = (mkExceptions, mkInclusions);
 
   TDzDirSeek = class(TComponent)
   private
@@ -26,17 +25,20 @@ type
     FSubDir: Boolean;
     FSorted: Boolean;
     FResultKind: TDSResultKind;
-    FMaskKind: TDSMaskKind;
     FUseMask: Boolean;
-    FMasks: TStrings;
+    FInclusions, FExclusions: TStrings;
 
     FList: TStringList;
 
     BaseDir: string;
     procedure IntSeek(const RelativeDir: string);
     function CheckMask(const aFile: string; IsDir: Boolean): Boolean;
+    function CheckMask_List(const aFile: string; IsDir: Boolean; MaskList: TStrings): Boolean;
     function GetName(const RelativeDir, Nome: string): string;
     procedure DoSort;
+
+    procedure SetInclusions(const Value: TStrings);
+    procedure SetExclusions(const Value: TStrings);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -51,9 +53,9 @@ type
     property SubDir: Boolean read FSubDir write FSubDir default True;
     property Sorted: Boolean read FSorted write FSorted default False;
     property ResultKind: TDSResultKind read FResultKind write FResultKind default rkComplete;
-    property MaskKind: TDSMaskKind read FMaskKind write FMaskKind default mkExceptions;
     property UseMask: Boolean read FUseMask write FUseMask default True;
-    property Masks: TStrings read FMasks write FMasks;
+    property Inclusions: TStrings read FInclusions write SetInclusions;
+    property Exclusions: TStrings read FExclusions write SetExclusions;
   end;
 
 function BytesToMB(X: Int64): string;
@@ -65,7 +67,7 @@ implementation
 
 uses System.SysUtils, System.Masks, System.StrUtils;
 
-const STR_VERSION = '1.3';
+const STR_VERSION = '2.0';
 
 procedure Register;
 begin
@@ -82,18 +84,29 @@ begin
 
   FSubDir := True;
   FResultKind := rkComplete;
-  FMaskKind := mkExceptions;
   FUseMask := True;
-  FMasks := TStringList.Create;
+  FInclusions := TStringList.Create;
+  FExclusions := TStringList.Create;
   FList := TStringList.Create;
 end;
 
 destructor TDzDirSeek.Destroy;
 begin
-  FMasks.Free;
+  FInclusions.Free;
+  FExclusions.Free;
   FList.Free;
 
   inherited;
+end;
+
+procedure TDzDirSeek.SetInclusions(const Value: TStrings);
+begin
+  FInclusions.Assign(Value);
+end;
+
+procedure TDzDirSeek.SetExclusions(const Value: TStrings);
+begin
+  FExclusions.Assign(Value);
 end;
 
 procedure TDzDirSeek.Seek;
@@ -104,7 +117,7 @@ begin
   BaseDir := IncludeTrailingPathDelimiter(FDir);
 
   FList.Clear;
-  IntSeek('');
+  IntSeek(string.Empty);
 
   if FSorted then DoSort;
 end;
@@ -142,6 +155,22 @@ begin
 end;
 
 function TDzDirSeek.CheckMask(const aFile: string; IsDir: Boolean): Boolean;
+begin
+  if not FUseMask then Exit(True);
+
+  Result :=
+    ( //Inclusions
+      IsDir
+      or (FInclusions.Count=0)
+      or CheckMask_List(aFile, IsDir{always false here}, FInclusions)
+    )
+    and
+    ( //Exclusions
+      not CheckMask_List(aFile, IsDir, FExclusions)
+    );
+end;
+
+function TDzDirSeek.CheckMask_List(const aFile: string; IsDir: Boolean; MaskList: TStrings): Boolean;
 
 type
   TProps = (pOnlyFile);
@@ -176,10 +205,8 @@ var
   Normal: Boolean; //not OnlyFile
 begin
   Result := False;
-  if not FUseMask then Exit(True);
-  if IsDir and (FMaskKind=mkInclusions) then Exit(True);
 
-  for aPreMask in FMasks do
+  for aPreMask in MaskList do
   begin
     aMask := aPreMask;
     P := GetProps(aMask);
@@ -193,8 +220,6 @@ begin
       Break;
     end;
   end;
-
-  if FMaskKind = mkExceptions then Result := not Result;
 end;
 
 function TDzDirSeek.GetName(const RelativeDir, Nome: string): string;
@@ -241,15 +266,15 @@ begin
 end;
 
 function GetFileSize(const aFileName: string): Int64;
-var Sr: TSearchRec;
+var
+  Stm: TFileStream;
 begin
-  if FindFirst(aFileName, faAnyFile, Sr) = 0 then
-  begin
-    Result := Sr.Size;
-
-    FindClose(Sr);
-  end
-    else raise Exception.CreateFmt('Could not get file size of "%s"', [aFileName]);
+  Stm := TFileStream.Create(aFileName, fmOpenRead or fmShareDenyNone);
+  try
+    Result := Stm.Size;
+  finally
+    Stm.Free;
+  end;
 end;
 
 end.

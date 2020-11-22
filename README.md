@@ -16,6 +16,11 @@
 
 ## What's New
 
+- 11/22/2020 (Version 2.0)
+
+   - New `Inclusions` and `Exclusions` properties.
+   - Included Demo application.
+
 - 10/31/2020 (Version 1.3)
 
    - Included Delphi 10.4 auto-install support.
@@ -68,13 +73,11 @@ Then you can read the public property `List` (TStringList) to get all found file
 
 `Dir: String` = Path to search
 
-`MaskKind: TDSMaskKind` =
+`Inclusions: TStrings` = If any line is specified, the component will search only the masks specified here, according to the mask syntax described below.
 
-- mkInclusions: Only the masks specified at **Masks** property will be included in results. *If you leave Masks property blank, no file will be retrieved.*
+`Exclusions: TStrings` = Right after `Inclusions` check, if file matches `Exclusions` masks (according to the mask syntax described below), then it will be excluded from search. 
 
-- mkExceptions (default): All files will be included in results, except the files which matches **Masks** properties. *If you leave Masks property blank, all files will be retrieved.*
-
-`Masks: TStrings` = The list of masks using Windows Masks typing, each mask per line. Some allowed masks:
+**Masks syntax:**
 
 ```
 *.txt
@@ -93,7 +96,7 @@ Example: Let's assume there is a path C:\MyApp. Inside this folder there is anot
 
 So, if we need to exclude all files that contains the text "app", we can specify at Masks property: `*app*`. But in this case, the folder will be excluded too, because they matches the expression `*app*`, and assuming that we want to include this directory because there are another files with other different names. In this case, we can use `<F>*app*`. This will consider only the file name part when the component checks the masks.
 
-*This property depends on **UseMask** property enabled. Also it will work according to **MaskKind** property definition.*
+*These properties depends on **UseMask** property enabled.*
 
 `ResultKind: TDSResultKind` = 
 
@@ -107,4 +110,4 @@ So, if we need to exclude all files that contains the text "app", we can specify
 
 `SubDir: Boolean` = If enabled, it will scan files in all sub-directories inside search path. (default True)
 
-`UseMask: Boolean` = If enabled, it will consider **Masks** and **MaskKind** properties. If disabled, it will retrieve always all files. (default Enabled).
+`UseMask: Boolean` = If enabled, it will consider `Inclusions` and `Exclusions` properties. If disabled, it will retrieve always all files. (default Enabled).
