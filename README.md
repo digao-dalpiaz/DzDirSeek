@@ -16,9 +16,10 @@
 
 ## What's New
 
-- 11/19/2020
+- 11/22/2020 (Version 2.0)
 
    - New `Inclusions` and `Exclusions` properties.
+   - Included Demo application.
 
 - 10/31/2020 (Version 1.3)
 
