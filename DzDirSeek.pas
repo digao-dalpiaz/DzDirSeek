@@ -67,7 +67,7 @@ implementation
 
 uses System.SysUtils, System.Masks, System.StrUtils;
 
-const STR_VERSION = '1.3';
+const STR_VERSION = '2.0';
 
 procedure Register;
 begin
