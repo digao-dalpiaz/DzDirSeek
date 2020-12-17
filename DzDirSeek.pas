@@ -107,7 +107,7 @@ implementation
 
 uses System.Masks, System.StrUtils, System.Generics.Defaults;
 
-const STR_VERSION = '2.0';
+const STR_VERSION = '3.0';
 
 procedure Register;
 begin
