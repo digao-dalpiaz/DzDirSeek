@@ -27,6 +27,7 @@ type
     FResultKind: TDSResultKind;
     FUseMask: Boolean;
     FInclusions, FExclusions: TStrings;
+    FIncludeHiddenFiles, FIncludeSystemFiles: Boolean;
 
     FList: TStringList;
 
@@ -56,6 +57,9 @@ type
     property UseMask: Boolean read FUseMask write FUseMask default True;
     property Inclusions: TStrings read FInclusions write SetInclusions;
     property Exclusions: TStrings read FExclusions write SetExclusions;
+
+    property IncludeHiddenFiles: Boolean read FIncludeHiddenFiles write FIncludeHiddenFiles default False;
+    property IncludeSystemFiles: Boolean read FIncludeSystemFiles write FIncludeSystemFiles default False;
   end;
 
 function BytesToMB(X: Int64): string;
@@ -130,13 +134,25 @@ var Sr: TSearchRec;
     Result := CheckMask(RelativeDir + Sr.Name, IsDir);
   end;
 
+  function InAttr(Attr: Integer): Boolean;
+  begin
+    Result := (Sr.Attr and Attr) <> 0;
+  end;
+
 begin
   if FindFirst(BaseDir + RelativeDir + '*', faAnyFile, Sr) = 0 then
   begin
     repeat
       if (Sr.Name = '.') or (Sr.Name = '..') then Continue;
 
-      if (Sr.Attr and faDirectory) <> 0 then
+      {$IFDEF MSWINDOWS}
+      {$WARN SYMBOL_PLATFORM OFF}
+      if InAttr(faHidden) and not FIncludeHiddenFiles then Continue;
+      if InAttr(faSysFile) and not FIncludeSystemFiles then Continue;
+      {$WARN SYMBOL_PLATFORM ON}
+      {$ENDIF}
+
+      if InAttr(faDirectory) then
       begin //directory
         if FSubDir then //include sub-directories
         begin
