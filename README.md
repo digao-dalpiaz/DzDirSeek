@@ -14,6 +14,7 @@
 - [Installing](#installing)
 - [How to use](#how-to-use)
 - [TDSFile object](#tdsfile-object)
+- [Result as String List](#result-as-string-list)
 - [Properties](#properties)
 - [Global Functions](#global-functions)
 
