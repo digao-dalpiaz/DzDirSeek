@@ -25,6 +25,7 @@ type
     FSize: Int64;
     FAttributes: Integer;
     FTimestamp: TDateTime;
+
     function GetAbsolutePath: string;
     function GetRelativePath: string;
   public
@@ -35,9 +36,16 @@ type
     property Attributes: Integer read FAttributes;
     property Timestamp: TDateTime read FTimestamp;
 
+    /// <summary>
+    ///  Returns: BaseDir + RelativeDir + Name
+    /// </summary>
     property AbsolutePath: string read GetAbsolutePath;
+    /// <summary>
+    ///  Returns: RelativeDir + Name
+    /// </summary>
     property RelativePath: string read GetRelativePath;
   end;
+
   TDSResultList = class(TObjectList<TDSFile>)
   public
     function IndexOfAbsolutePath(const Path: string; IgnoreCase: Boolean = False): Integer;
