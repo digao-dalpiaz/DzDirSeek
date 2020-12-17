@@ -20,10 +20,10 @@
 
 ## What's New
 
-- 12/17/2020 (Version 2.1)
+- 12/17/2020 (Version 3.0)
 
-   - New `IncludeHiddenFiles` and `IncludeSystemFiles` properties.
    - New `ResultList` using new custom TDSFile object. If you want to get result in Strings list, you can use new method `GetResultStrings`.
+   - New `IncludeHiddenFiles` and `IncludeSystemFiles` properties.
 
 - 11/22/2020 (Version 2.0)
 
