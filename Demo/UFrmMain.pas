@@ -24,6 +24,8 @@ type
     BtnSeek: TButton;
     Label4: TLabel;
     LbCount: TLabel;
+    CkHiddenFiles: TCheckBox;
+    CkSystemFiles: TCheckBox;
     procedure BtnPathClick(Sender: TObject);
     procedure BtnSeekClick(Sender: TObject);
   end;
@@ -54,6 +56,8 @@ begin
   DS.Inclusions.Assign(EdInc.Lines);
   DS.Exclusions.Assign(EdExc.Lines);
   DS.ResultKind := TDSResultKind(RgResultKind.ItemIndex);
+  DS.IncludeHiddenFiles := CkHiddenFiles.Checked;
+  DS.IncludeSystemFiles := CkSystemFiles.Checked;
   DS.Sorted := CkSorted.Checked;
 
   EdResult.Text := 'Searching...';
