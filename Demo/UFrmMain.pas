@@ -49,13 +49,14 @@ begin
 end;
 
 procedure TFrmMain.BtnSeekClick(Sender: TObject);
+var
+  S: TStringList;
 begin
   DS.Dir := EdDir.Text;
   DS.SubDir := CkSubDir.Checked;
   DS.UseMask := CkUseMasks.Checked;
   DS.Inclusions.Assign(EdInc.Lines);
   DS.Exclusions.Assign(EdExc.Lines);
-  DS.ResultKind := TDSResultKind(RgResultKind.ItemIndex);
   DS.IncludeHiddenFiles := CkHiddenFiles.Checked;
   DS.IncludeSystemFiles := CkSystemFiles.Checked;
   DS.Sorted := CkSorted.Checked;
@@ -65,8 +66,15 @@ begin
 
   DS.Seek;
 
-  LbCount.Caption := IntToStr(DS.List.Count);
-  EdResult.Lines.Assign(DS.List);
+  S := TStringList.Create;
+  try
+    DS.GetResultStrings(S, TDSResultKind(RgResultKind.ItemIndex));
+
+    LbCount.Caption := IntToStr(S.Count);
+    EdResult.Lines.Assign(S);
+  finally
+    S.Free;
+  end;
 end;
 
 end.
