@@ -15,8 +15,6 @@ interface
 uses System.Classes, System.SysUtils, System.Generics.Collections;
 
 type
-  TDSResultKind = (rkComplete, rkRelative, rkOnlyName);
-
   TDSFile = class
   private
     FBaseDir: string;
@@ -51,6 +49,8 @@ type
     function IndexOfAbsolutePath(const Path: string; IgnoreCase: Boolean = False): Integer;
     function IndexOfRelativePath(const Path: string; IgnoreCase: Boolean = False): Integer;
   end;
+
+  TDSResultKind = (rkComplete, rkRelative, rkOnlyName);
 
   TDzDirSeek = class(TComponent)
   private
@@ -99,6 +99,7 @@ type
 
 function BytesToMB(X: Int64): string;
 function GetFileSize(const aFileName: string): Int64;
+function ContainsAttribute(AttributesEnum, Attribute: Integer): Boolean;
 
 procedure Register;
 
@@ -371,6 +372,11 @@ begin
   finally
     Stm.Free;
   end;
+end;
+
+function ContainsAttribute(AttributesEnum, Attribute: Integer): Boolean;
+begin
+  Result := (AttributesEnum and Attribute) <> 0;
 end;
 
 end.
