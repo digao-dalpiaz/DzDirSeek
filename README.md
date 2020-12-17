@@ -14,8 +14,16 @@
 - [Installing](#installing)
 - [How to use](#how-to-use)
 - [Properties](#properties)
+- [TDSFile object](#tdsfile-object)
+- [Result as String List](#result-as-string-list)
+- [Global Functions](#global-functions)
 
 ## What's New
+
+- 12/17/2020 (Version 3.0)
+
+   - New `ResultList` using new custom TDSFile object. If you want to get result in Strings list, you can use new method `GetResultStrings`.
+   - New `IncludeHiddenFiles` and `IncludeSystemFiles` properties.
 
 - 11/22/2020 (Version 2.0)
 
@@ -68,7 +76,7 @@ Supports Delphi XE2..Delphi 10.4
 
 Just fill desired properties and call method `Seek`.
 
-Then you can read the public property `List` (TStringList) to get all found files.
+Then you can read the public property `ResultList` to get all found files. This list contains `TDSFile` objects.
 
 ## Properties
 
@@ -99,16 +107,56 @@ So, if we need to exclude all files that contains the text "app", we can specify
 
 *These properties depends on **UseMask** property enabled.*
 
-`ResultKind: TDSResultKind` = 
-
-- rkComplete (default): The result will include the full file path (search path + sub-directories + file name)
-
-- rkRelative: The result will include only the relative path, without the search path (sub-directories + file name)
-
-- rkOnlyName: The result will include only the file name, without search path or sub-directories.
-
 `Sorted: Boolean` = If enabled, it will retrieve directories and files alphabetically sorted. (default False)
 
 `SubDir: Boolean` = If enabled, it will scan files in all sub-directories inside search path. (default True)
 
 `UseMask: Boolean` = If enabled, it will consider `Inclusions` and `Exclusions` properties. If disabled, it will retrieve always all files. (default Enabled).
+
+`IncludeHiddenFiles` = If enabled, it will include hidden files and folders (only works on Windows platform).
+
+`IncludeSystemFiles` = If enabled, it will include system files and folders (only works on Windows platform).
+
+## TDSFile object
+
+When you run a directory seek, the result will be retrieved in `ResultList` property, which contains `TDSFile` objects. You can iterate this list to obtain results properties.
+
+### TDSFile properties
+
+`BaseDir` = directory path used when search started.
+
+`RelativeDir` = directory path without Base Directory prefix.
+
+`Name` = only file name part.
+
+`Size` = File size in bytes.
+
+`Attributes` = File attributes (The same as TSearchRec.Attr property).
+
+`Timestamp` = File last write Date and Time.
+
+## Result as String List
+
+If you want to get only the file path strings list, you can use the method `GetResultStrings`:
+
+```delphi
+procedure GetResultStrings(S: TStrings; Kind: TDSResultKind);
+```
+
+Where `Kind` property represents:
+- rkComplete: The result will include the full file path (search path + sub-directories + file name)
+- rkRelative: The result will include only the relative path, without the search path (sub-directories + file name)
+- rkOnlyName: The result will include only the file name, without search path or sub-directories.
+
+## Global Functions
+
+```delphi
+//Returns bytes in megabytes string format, with two decimal places.
+function BytesToMB(X: Int64): string;
+
+//Returns file size in bytes.
+function GetFileSize(const aFileName: string): Int64;
+
+//Returns if an attribute enumerator contains a specific attribute (use System.SysUtils consts: faReadOnly, faHidden, faDirectory...)
+function ContainsAttribute(AttributesEnum, Attribute: Integer): Boolean;
+```
