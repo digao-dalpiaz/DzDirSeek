@@ -13,7 +13,9 @@
 - [Introduction](#introduction)
 - [Installing](#installing)
 - [How to use](#how-to-use)
+- [TDSFile object](#tdsfile-object)
 - [Properties](#properties)
+- [Global Functions](#global-functions)
 
 ## What's New
 
@@ -144,3 +146,16 @@ So, if we need to exclude all files that contains the text "app", we can specify
 `IncludeHiddenFiles` = If enabled, it will include hidden files and folders (only works on Windows platform).
 
 `IncludeSystemFiles` = If enabled, it will include system files and folders (only works on Windows platform).
+
+## Global Functions
+
+```delphi
+//Returns bytes in megabytes string format, with two decimal places.
+function BytesToMB(X: Int64): string;
+
+//Returns file size in bytes.
+function GetFileSize(const aFileName: string): Int64;
+
+//Returns if an attribute enumerator contains a specific attribute (use System.SysUtils consts: faReadOnly, faHidden, faDirectory...)
+function ContainsAttribute(AttributesEnum, Attribute: Integer): Boolean;
+```
