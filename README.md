@@ -17,6 +17,10 @@
 
 ## What's New
 
+- 12/17/2020 (Version 2.1)
+
+   - New `IncludeHiddenFiles` and `IncludeSystemFiles` properties.
+
 - 11/22/2020 (Version 2.0)
 
    - New `Inclusions` and `Exclusions` properties.
@@ -112,3 +116,7 @@ So, if we need to exclude all files that contains the text "app", we can specify
 `SubDir: Boolean` = If enabled, it will scan files in all sub-directories inside search path. (default True)
 
 `UseMask: Boolean` = If enabled, it will consider `Inclusions` and `Exclusions` properties. If disabled, it will retrieve always all files. (default Enabled).
+
+`IncludeHiddenFiles` = If enabled, it will include hidden files and folders (only works on Windows platform).
+
+`IncludeSystemFiles` = If enabled, it will include system files and folders (only works on Windows platform).
