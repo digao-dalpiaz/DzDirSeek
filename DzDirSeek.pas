@@ -345,8 +345,8 @@ begin
   for F in FResultList do
   begin
     case Kind of
-      rkComplete: S.Add(F.FBaseDir + F.FRelativeDir + F.FName);
-      rkRelative: S.Add(F.FRelativeDir + F.FName);
+      rkComplete: S.Add(F.GetAbsolutePath);
+      rkRelative: S.Add(F.GetRelativePath);
       rkOnlyName: S.Add(F.FName);
 
       else raise Exception.Create('Invalid kind');
