@@ -20,6 +20,7 @@
 - 12/17/2020 (Version 2.1)
 
    - New `IncludeHiddenFiles` and `IncludeSystemFiles` properties.
+   - New `ResultList` using new custom TDSFile object. If you want to get result in Strings list, you can use new method `GetResultStrings`.
 
 - 11/22/2020 (Version 2.0)
 
@@ -72,7 +73,38 @@ Supports Delphi XE2..Delphi 10.4
 
 Just fill desired properties and call method `Seek`.
 
-Then you can read the public property `List` (TStringList) to get all found files.
+Then you can read the public property `ResultList` to get all found files. This list contains `TDSFile` objects.
+
+## TDSFile object
+
+When you run a directory seek, the result will be retrieved in `ResultList` property, which contains `TDSFile` objects. You can iterate this list to obtain results properties.
+
+### TDSFile properties
+
+`BaseDir` = directory path used when search started.
+
+`RelativeDir` = directory path without Base Directory prefix.
+
+`Name` = only file name part.
+
+`Size` = File size in bytes.
+
+`Attributes` = File attributes (The same as TSearchRec.Attr property).
+
+`Timestamp` = File last write Date and Time.
+
+## Result as String List
+
+If you want to get only the file path strings list, you can use the method `GetResultStrings`:
+
+```delphi
+procedure GetResultStrings(S: TStrings; Kind: TDSResultKind);
+```
+
+Where `Kind` property represents:
+- rkComplete: The result will include the full file path (search path + sub-directories + file name)
+- rkRelative: The result will include only the relative path, without the search path (sub-directories + file name)
+- rkOnlyName: The result will include only the file name, without search path or sub-directories.
 
 ## Properties
 
@@ -102,14 +134,6 @@ Example: Let's assume there is a path C:\MyApp. Inside this folder there is anot
 So, if we need to exclude all files that contains the text "app", we can specify at Masks property: `*app*`. But in this case, the folder will be excluded too, because they matches the expression `*app*`, and assuming that we want to include this directory because there are another files with other different names. In this case, we can use `<F>*app*`. This will consider only the file name part when the component checks the masks.
 
 *These properties depends on **UseMask** property enabled.*
-
-`ResultKind: TDSResultKind` = 
-
-- rkComplete (default): The result will include the full file path (search path + sub-directories + file name)
-
-- rkRelative: The result will include only the relative path, without the search path (sub-directories + file name)
-
-- rkOnlyName: The result will include only the file name, without search path or sub-directories.
 
 `Sorted: Boolean` = If enabled, it will retrieve directories and files alphabetically sorted. (default False)
 
