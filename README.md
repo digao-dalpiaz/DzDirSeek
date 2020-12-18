@@ -14,11 +14,17 @@
 - [Installing](#installing)
 - [How to use](#how-to-use)
 - [Properties](#properties)
-- [TDSFile object](#tdsfile-object)
+- [TDSResultItem object](#tdsresultitem-object)
 - [Result as String List](#result-as-string-list)
 - [Global Functions](#global-functions)
 
 ## What's New
+
+- 12/17/2020 (Version 3.1)
+
+   - New `IncludeDirItem` property to include directories items in search results.
+   - Changed properties `IncludeHiddenFiles` and `IncludeSystemFiles` to `SearchHiddenFiles` and `SearchSystemFiles`.
+   - Changed `TDSFile` to `TDSResultItem`.
 
 - 12/17/2020 (Version 3.0)
 
@@ -76,7 +82,7 @@ Supports Delphi XE2..Delphi 10.4
 
 Just fill desired properties and call method `Seek`.
 
-Then you can read the public property `ResultList` to get all found files. This list contains `TDSFile` objects.
+Then you can read the public property `ResultList` to get all found files. This list contains `TDSResultItem` objects.
 
 ## Properties
 
@@ -117,11 +123,11 @@ So, if we need to exclude all files that contains the text "app", we can specify
 
 `IncludeSystemFiles` = If enabled, it will include system files and folders (only works on Windows platform).
 
-## TDSFile object
+## TDSResultItem object
 
-When you run a directory seek, the result will be retrieved in `ResultList` property, which contains `TDSFile` objects. You can iterate this list to obtain results properties.
+When you run a directory seek, the result will be retrieved in `ResultList` property, which contains `TDSResultItem` objects. You can iterate this list to obtain results properties.
 
-### TDSFile properties
+### TDSResultItem properties
 
 `BaseDir` = directory path used when search started.
 
@@ -134,6 +140,8 @@ When you run a directory seek, the result will be retrieved in `ResultList` prop
 `Attributes` = File attributes (The same as TSearchRec.Attr property).
 
 `Timestamp` = File last write Date and Time.
+
+`IsDir` = if item is a directory (only appears if `IncludeDirItem` property is True when search is executed).
 
 ## Result as String List
 
