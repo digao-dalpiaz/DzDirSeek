@@ -57,11 +57,11 @@ object FrmMain: TFrmMain
   end
   object CkSorted: TCheckBox
     Left = 512
-    Top = 224
+    Top = 216
     Width = 97
     Height = 17
     Caption = 'Sort results'
-    TabOrder = 8
+    TabOrder = 7
   end
   object CkSubDir: TCheckBox
     Left = 16
@@ -131,7 +131,7 @@ object FrmMain: TFrmMain
     Left = 512
     Top = 88
     Width = 233
-    Height = 81
+    Height = 89
     Caption = 'Result kind'
     ItemIndex = 0
     Items.Strings = (
@@ -154,7 +154,7 @@ object FrmMain: TFrmMain
     ParentFont = False
     ReadOnly = True
     ScrollBars = ssBoth
-    TabOrder = 10
+    TabOrder = 11
   end
   object BtnSeek: TButton
     Left = 16
@@ -168,24 +168,32 @@ object FrmMain: TFrmMain
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 9
+    TabOrder = 10
     OnClick = BtnSeekClick
   end
   object CkHiddenFiles: TCheckBox
-    Left = 512
-    Top = 176
+    Left = 624
+    Top = 192
     Width = 121
     Height = 17
-    Caption = 'Include Hidden Files'
-    TabOrder = 6
+    Caption = 'Search Hidden Files'
+    TabOrder = 8
   end
   object CkSystemFiles: TCheckBox
-    Left = 512
-    Top = 200
+    Left = 624
+    Top = 216
     Width = 129
     Height = 17
-    Caption = 'Include System Files'
-    TabOrder = 7
+    Caption = 'Search System Files'
+    TabOrder = 9
+  end
+  object CkDirItem: TCheckBox
+    Left = 512
+    Top = 192
+    Width = 97
+    Height = 17
+    Caption = 'Include Dir Item'
+    TabOrder = 6
   end
   object DS: TDzDirSeek
     Left = 424

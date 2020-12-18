@@ -26,6 +26,7 @@ type
     LbCount: TLabel;
     CkHiddenFiles: TCheckBox;
     CkSystemFiles: TCheckBox;
+    CkDirItem: TCheckBox;
     procedure BtnPathClick(Sender: TObject);
     procedure BtnSeekClick(Sender: TObject);
   end;
@@ -57,9 +58,10 @@ begin
   DS.UseMask := CkUseMasks.Checked;
   DS.Inclusions.Assign(EdInc.Lines);
   DS.Exclusions.Assign(EdExc.Lines);
-  DS.IncludeHiddenFiles := CkHiddenFiles.Checked;
-  DS.IncludeSystemFiles := CkSystemFiles.Checked;
+  DS.SearchHiddenFiles := CkHiddenFiles.Checked;
+  DS.SearchSystemFiles := CkSystemFiles.Checked;
   DS.Sorted := CkSorted.Checked;
+  DS.IncludeDirItem := CkDirItem.Checked;
 
   EdResult.Text := 'Searching...';
   Refresh;

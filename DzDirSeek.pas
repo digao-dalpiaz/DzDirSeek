@@ -15,7 +15,7 @@ interface
 uses System.Classes, System.SysUtils, System.Generics.Collections;
 
 type
-  TDSFile = class
+  TDSResultItem = class
   private
     FBaseDir: string;
     FRelativeDir: string;
@@ -23,6 +23,7 @@ type
     FSize: Int64;
     FAttributes: Integer;
     FTimestamp: TDateTime;
+    FIsDir: Boolean;
 
     function GetAbsolutePath: string;
     function GetRelativePath: string;
@@ -33,6 +34,7 @@ type
     property Size: Int64 read FSize;
     property Attributes: Integer read FAttributes;
     property Timestamp: TDateTime read FTimestamp;
+    property IsDir: Boolean read FIsDir;
 
     /// <summary>
     ///  Returns: BaseDir + RelativeDir + Name
@@ -44,7 +46,7 @@ type
     property RelativePath: string read GetRelativePath;
   end;
 
-  TDSResultList = class(TObjectList<TDSFile>)
+  TDSResultList = class(TObjectList<TDSResultItem>)
   public
     function IndexOfAbsolutePath(const Path: string; IgnoreCase: Boolean = False): Integer;
     function IndexOfRelativePath(const Path: string; IgnoreCase: Boolean = False): Integer;
@@ -61,7 +63,8 @@ type
     FSorted: Boolean;
     FUseMask: Boolean;
     FInclusions, FExclusions: TStrings;
-    FIncludeHiddenFiles, FIncludeSystemFiles: Boolean;
+    FSearchHiddenFiles, FSearchSystemFiles: Boolean;
+    FIncludeDirItem: Boolean;
 
     FResultList: TDSResultList;
 
@@ -69,7 +72,7 @@ type
     procedure IntSeek(const RelativeDir: string);
     function CheckMask(const aFile: string; IsDir: Boolean): Boolean;
     function CheckMask_List(const aFile: string; IsDir: Boolean; MaskList: TStrings): Boolean;
-    procedure AddFile(const RelativeDir: string; const Sr: TSearchRec);
+    procedure AddItem(const RelativeDir: string; const Sr: TSearchRec; IsDir: Boolean);
     procedure DoSort;
 
     procedure SetInclusions(const Value: TStrings);
@@ -93,8 +96,10 @@ type
     property Inclusions: TStrings read FInclusions write SetInclusions;
     property Exclusions: TStrings read FExclusions write SetExclusions;
 
-    property IncludeHiddenFiles: Boolean read FIncludeHiddenFiles write FIncludeHiddenFiles default False;
-    property IncludeSystemFiles: Boolean read FIncludeSystemFiles write FIncludeSystemFiles default False;
+    property SearchHiddenFiles: Boolean read FSearchHiddenFiles write FSearchHiddenFiles default False;
+    property SearchSystemFiles: Boolean read FSearchSystemFiles write FSearchSystemFiles default False;
+
+    property IncludeDirItem: Boolean read FIncludeDirItem write FIncludeDirItem default False;
   end;
 
 function BytesToMB(X: Int64): string;
@@ -116,12 +121,12 @@ end;
 
 //
 
-function TDSFile.GetAbsolutePath: string;
+function TDSResultItem.GetAbsolutePath: string;
 begin
   Result := FBaseDir + FRelativeDir + FName;
 end;
 
-function TDSFile.GetRelativePath: string;
+function TDSResultItem.GetRelativePath: string;
 begin
   Result := FRelativeDir + FName;
 end;
@@ -219,8 +224,8 @@ begin
 
       {$IFDEF MSWINDOWS}
       {$WARN SYMBOL_PLATFORM OFF}
-      if InAttr(faHidden) and not FIncludeHiddenFiles then Continue;
-      if InAttr(faSysFile) and not FIncludeSystemFiles then Continue;
+      if InAttr(faHidden) and not FSearchHiddenFiles then Continue;
+      if InAttr(faSysFile) and not FSearchSystemFiles then Continue;
       {$WARN SYMBOL_PLATFORM ON}
       {$ENDIF}
 
@@ -229,12 +234,15 @@ begin
         if FSubDir then //include sub-directories
         begin
           if IntCheckMask(True{Dir}) then
+          begin
+            if FIncludeDirItem then AddItem(RelativeDir, Sr, True{Dir});
             IntSeek(RelativeDir + Sr.Name + '\');
+          end;
         end;
       end else
       begin //file
         if IntCheckMask(False) then
-          AddFile(RelativeDir, Sr);
+          AddItem(RelativeDir, Sr, False);
       end;
 
     until FindNext(Sr) <> 0;
@@ -310,45 +318,43 @@ begin
   end;
 end;
 
-procedure TDzDirSeek.AddFile(const RelativeDir: string; const Sr: TSearchRec);
+procedure TDzDirSeek.AddItem(const RelativeDir: string; const Sr: TSearchRec; IsDir: Boolean);
 var
-  F: TDSFile;
+  Item: TDSResultItem;
 begin
-  F := TDSFile.Create;
-  F.FBaseDir := BaseDir;
-  F.FRelativeDir := RelativeDir;
-  F.FName := Sr.Name;
-  F.FSize := Sr.Size;
-  F.FAttributes := Sr.Attr;
-  F.FTimestamp := Sr.TimeStamp;
-  FResultList.Add(F);
+  Item := TDSResultItem.Create;
+  Item.FBaseDir := BaseDir;
+  Item.FRelativeDir := RelativeDir;
+  Item.FName := Sr.Name;
+  Item.FSize := Sr.Size;
+  Item.FAttributes := Sr.Attr;
+  Item.FTimestamp := Sr.TimeStamp;
+  Item.FIsDir := IsDir;
+  FResultList.Add(Item);
 end;
 
 // ============================================================================
 
-function SortItem(const Left, Right: TDSFile): Integer;
+function SortItem(const Left, Right: TDSResultItem): Integer;
 begin
-  if Left.FRelativeDir = Right.FRelativeDir then
-    Result := AnsiCompareText(Left.FName, Right.FName)
-  else
-    Result := AnsiCompareText(Left.FRelativeDir, Right.FRelativeDir);
+  Result := AnsiCompareText(Left.GetRelativePath, Right.GetRelativePath);
 end;
 
 procedure TDzDirSeek.DoSort;
 begin
-  FResultList.Sort(TComparer<TDSFile>.Construct(SortItem));
+  FResultList.Sort(TComparer<TDSResultItem>.Construct(SortItem));
 end;
 
 procedure TDzDirSeek.GetResultStrings(S: TStrings; Kind: TDSResultKind);
 var
-  F: TDSFile;
+  Item: TDSResultItem;
 begin
-  for F in FResultList do
+  for Item in FResultList do
   begin
     case Kind of
-      rkComplete: S.Add(F.GetAbsolutePath);
-      rkRelative: S.Add(F.GetRelativePath);
-      rkOnlyName: S.Add(F.FName);
+      rkComplete: S.Add(Item.GetAbsolutePath);
+      rkRelative: S.Add(Item.GetRelativePath);
+      rkOnlyName: S.Add(Item.FName);
 
       else raise Exception.Create('Invalid kind');
     end;
