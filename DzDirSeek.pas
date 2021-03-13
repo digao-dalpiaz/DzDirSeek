@@ -112,7 +112,7 @@ implementation
 
 uses System.Masks, System.StrUtils, System.Generics.Defaults;
 
-const STR_VERSION = '3.3';
+const STR_VERSION = '3.4';
 
 procedure Register;
 begin
