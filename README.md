@@ -22,6 +22,13 @@
 
 ## What's New
 
+- 09/12/2021 (Version 3.5)
+
+   - Delphi 11 auto-install support.
+
+<details>
+  <summary>Click here to view the entire changelog</summary>
+
 - 03/13/2021 (Version 3.4)
 
    - Removed CompInstall.exe from component sources due to AV false positive warning (now you can get it directly from CompInstall repository).
@@ -65,6 +72,8 @@
 - 05/03/2020
 
    - Updated CompInstall to version 1.2
+   
+</details>
 
 ## Introduction
 
